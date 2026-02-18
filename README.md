@@ -1,2 +1,3 @@
-# null-db
-NU Launch Labs Database: Single source of truth for all member data, application cycles, and email lists.
+# NU Launch Labs Database (NULL-DB)
+
+A platform designed to manage the full lifecycle of members and applications—from initial submission to team placement.
