@@ -1,0 +1,50 @@
+name: Backend PR Checks
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-pr.yaml"
+
+jobs:
+  validate-backend:
+    name: Validate Backend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.25"
+          cache: true
+          cache-dependency-path: "backend/go.sum"
+
+      - name: Check Formatting & Tidy
+        run: |
+          go fmt ./...
+          go mod tidy
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::Code is not formatted or go.mod is dirty. Please run 'go fmt ./...' and 'go mod tidy' locally."
+            git diff
+            exit 1
+          fi
+      
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: latest
+          working-directory: backend
+          args: --timeout=10m
+      
+      - name: Run Tests
+        run: go test ./...
+
+      - name: Verify Build
+        run: go build -v ./...
