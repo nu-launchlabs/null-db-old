@@ -4,6 +4,10 @@ build:
 	@echo "Building..."
 	@go build -o bin/main main.go
 
+fmt:
+	@go fmt ./...
+	@go mod tidy
+
 run:
 	@go run main.go
 
