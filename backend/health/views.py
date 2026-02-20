@@ -1,0 +1,6 @@
+from django.http import JsonResponse
+
+
+def health_check(request):
+    """Return a simple health check response."""
+    return JsonResponse({"status": "ok"})

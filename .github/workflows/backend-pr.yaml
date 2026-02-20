@@ -18,32 +18,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Go
-        uses: actions/setup-go@v5
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          go-version: "1.24"
-          cache: true
-          cache-dependency-path: "backend/go.sum"
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: "backend/requirements.txt"
 
-      - name: Check Formatting & Tidy
-        run: |
-          go fmt ./...
-          go mod tidy
-          if [ -n "$(git status --porcelain)" ]; then
-            echo "::error::Code is not formatted or go.mod is dirty. Please run 'go fmt ./...' and 'go mod tidy' locally."
-            git diff
-            exit 1
-          fi
-      
-      - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v6
-        with:
-          version: latest
-          working-directory: backend
-          args: --timeout=10m
-      
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run System Checks
+        run: python manage.py check
+
       - name: Run Tests
-        run: go test ./...
-
-      - name: Verify Build
-        run: go build -v ./...
+        run: python manage.py test

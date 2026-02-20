@@ -1,22 +1,22 @@
 # Makefile for NullDB backend
 
-build:
-	@echo "Building..."
-	@go build -o bin/main main.go
-
-fmt:
-	@go fmt ./...
-	@go mod tidy
+install:
+	@echo "Installing dependencies..."
+	@pip install -r requirements.txt
 
 run:
-	@go run main.go
-
-clean:
-	@echo "Cleaning..."
-	@rm -rf bin
+	@python manage.py runserver 0.0.0.0:8080
 
 test:
 	@echo "Testing..."
-	@go test ./... -v
+	@python manage.py test
 
-.PHONY: build run clean test
+check:
+	@python manage.py check
+
+clean:
+	@echo "Cleaning..."
+	@find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
+	@find . -type f -name "*.pyc" -delete 2>/dev/null || true
+
+.PHONY: install run test check clean
