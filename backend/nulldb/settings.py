@@ -4,6 +4,7 @@ Django settings for nulldb project.
 
 import os
 from pathlib import Path
+from typing import Any
 
 from dotenv import load_dotenv
 
@@ -14,9 +15,7 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv(
-    "SECRET_KEY", "django-insecure-dev-key-change-in-production"
-)
+SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-dev-key-change-in-production")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "True").lower() in ("true", "1", "yes")
@@ -38,7 +37,7 @@ ROOT_URLCONF = "nulldb.urls"
 WSGI_APPLICATION = "nulldb.wsgi.application"
 
 # No database needed for now
-DATABASES = {}
+DATABASES: dict[str, Any] = {}
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

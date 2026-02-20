@@ -33,3 +33,11 @@ jobs:
 
       - name: Run Tests
         run: python manage.py test
+
+      - name: Lint & Format Check
+        run: |
+          ruff check .
+          ruff format --check .
+
+      - name: Type Check
+        run: mypy .

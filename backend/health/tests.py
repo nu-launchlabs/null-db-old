@@ -9,6 +9,4 @@ class HealthCheckTest(SimpleTestCase):
         client = Client()
         response = client.get("/health")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            json.loads(response.content), {"status": "ok"}
-        )
+        self.assertEqual(json.loads(response.content), {"status": "ok"})
